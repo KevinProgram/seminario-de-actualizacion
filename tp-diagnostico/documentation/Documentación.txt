@@ -1,0 +1,245 @@
+1. Crear la carpeta (Crud-nodejs-mysql) y abrirla en el Visual.
+
+2. Instalar los siguientes módulos en un terminal del Visual:
+    npm init --yes                                  Se usa para para crar el package.json, que es el archivo principal del proyecto y lista las dependencias a utilizar.
+    
+    npm install express                             Framework de nodejs que ayuda a escribir menos código de nodejs dado que tiene funciones ya probadas.
+    npm install mysql                               Conecta el módulo de express a mysql.
+    npm install express-myconnection                Permite escribir consultas sql más rápido solo en las consultas o en las rutas de express.
+
+    npm install morgan                              Ayuda a ver las peticiones del servidor.
+    npm install ejs                                 Motor de plantilla que envía html's procesados en el servidor.
+
+    npm install express mysql express-myconnection
+
+3. Crear la carpeta src y dentro el archivo app.js.
+
+    En él solicitar express e inicializarlo (Las dos primeras líneas de código).
+    Tambien inicializar el servidor con app.listen().
+
+4. Ejecutar el servidor: node src/app.js.
+
+5. Instalar módulo nodemon                          Se encarga de reiniciar el servidor automáticamente.
+
+    npm install nodemon -D                          Al ser para el desarrollo, nodemon se instala en una sección llamada "Dev dependence".
+
+6. Armar "settings". Luego probarlo                 Sección que se encarga de configurar express.
+
+7.  Realizar los siguientes cambios en "package.json"
+
+
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+},
+
+
+
+"scripts": {
+    "dev": "nodemon src/app.js"
+},
+
+
+8. Probar los cambios (Ejecutar "npm run dev")         //(Ejecutar "nodemon src/app.js" fallará).
+
+9. Crear la carpeta "views" (En éste caso "ejs")       Encargada de almacenar todos los archivos de motores de plantillas.
+
+    Agregar la línea "app.set ('view engine', 'ejs');" a "app.js".              Al ya estar instalado "ejs", se puede definir como un string.
+    
+
+10. Agregar la dirección donde se encuentran ésos archivos. Para ésto hay que requerir el path.
+
+    const path = require ('path');
+
+    app.set ('views', path.join(__dirname, 'views'));   Ésta líne une el archivo "app.js" con "views" independiéntemente del Sistema Operativo.
+
+
+    "__dirname" Se encargar de suministrar la ruta del archivo que lo ejecuta.
+
+11. Configurar los "middlewares".                       Funciones que se ejecutan antes lleguen las peticiones de los usuarios.
+    
+    Registar las peticiones antes de que lleguen utilizando "morgan".
+
+        Requerir "morgan": const morgan = require ('morgan');
+
+        Utilizar "morgan": app.use(morgan('dev'));      Se ejecuta "morgan" porque es una función, y como parámetros recive "dev" para recivir por consola mensajes sencillos
+
+        Probar "npm run dev". Nada cambiar pero al entrar en "http://localhost:3000/" aparece un mensaje por la terminal de Visual.
+
+12. Conectar a MySQL
+
+        Requerir el módulo
+            const mysql = require ('mysql');
+            const myConnection = require ('express-myconnection');
+    
+    Utilizar el módulo.
+
+13. Crear la carpeta donde se alojará la base de datos y su respectivo archivo.
+
+14. Crear la conexión con la base de datos.
+
+15. Agregar la carpeta "routes", para alojar todas las rutas del servidor de express. Dentro de ésta carpeta, crear el archivo "contact.js".
+
+    const express = require('express');
+    const router = express.Router();
+
+    module.exports = router;
+
+16. Agregar la carpeta "controllers". Dentro de ésta carpeta, crear el archivo "contactController.js".
+
+17. Importar las rutas en "app.js".
+
+18. Crear la carpeta "public", y los archivos estáticos.
+
+19. En "src/routes/contact.js", escribir las url's que el servidor manejará.
+
+20. En "src/controllers/contactController.js", crear el objeto "controller" para cargarle los métodos (Como listar, borrar, etc.) después.
+
+    const controller = {};
+
+    controller.list = (req, res) => {
+        res.send('hello world');
+    };
+
+    module.exports = controller;
+
+21. En "src/routes/contact.js", agregar lo siguiente:
+
+    const contactController = require('../controllers/contactController');
+
+    router.get('/', contactController.list);
+
+22. En "src/controllers/contactController.js", intercambiar la siguiente línea de código:
+
+    res.send('hello world');
+
+    Por:
+
+    req.getConnection((err, conn) => {
+        conn.query('SELECT * FROM contact', (err, contact) => {
+            if (err){
+                res.json(err);
+            }
+            res.render('')
+        });
+    });
+
+23. Crear el archivo "contact.ejs" en "src/views".
+
+24. Renderizar una vista llamada "contact" (Agregar en "contactController.js"), y agregar los datos.
+
+    res.render('contact', {
+        data: contact
+        })
+
+25. Crear una carpeta dentro de "views" llamada "partials", y dos archivos, "footer.ejs" y "header.ejs".
+
+26. En "header.ejs" agregar toda la estructura html, y en "footer.ejs" la finalización del "body" y del "html" mismo.
+
+27. Agregar el contenido al archivo "contacts.ejs".
+
+28. Agregar las siguientes líneas de código:
+
+    En "src/routers/contact.js"
+        
+        router.post('/add', contactController.save);
+
+
+    En "src/controllers/contactController.js"
+        
+        controller.save = (req, res) => {
+            const data = req.body;
+
+            req.getConnection((err, conn) => {
+                conn.query('INSERT INTO contact set ?', [data], (err, contact) => {
+                    console.log(contact);
+                    res.send('works')
+                });
+            })
+        }; // Función para guardar datos.
+
+29. Definir la siguiente línea de código en "app.js":
+
+    app.use(express.urlencoded({extended: false}));
+
+30. Armar los "<thead>" y los "<tbody> dentro del archivo contacts.ejs.
+
+31. En "src/controllers/contactController.js", eliminar las siguentes líneas de código:
+
+    console.log(contact);
+    res.send('works')
+
+    Y armar el método "delete".
+
+    
+    Adicionalmente, agregar la redirección al formulario:
+        
+        res.redirect('/');
+
+32. Modificar las rutas ("src/routers/contact.js") agregando la siguiente línea:
+
+    router.get('/delete/:id', contactController.delete);
+
+33. Agregar la referencia al delete en "src/views/contacts.ejs":
+
+    <a href="/delete/<%= data[i].id %>" class="btn btn-danger">Delete</a>
+
+34. En "src/controllers/contactController.js", armar el delete de la siguiente manera: 
+
+    controller.delete = (req, res) => {
+    const {id} = req.params;
+    req.getConnection((err, conn) => {
+        conn.query('DELETE FROM contact WHERE id = ?', [id], (err, rows) => {
+            res.redirect('/');
+            });
+        })
+    };
+
+35. Crear un archivo dentro de "src/views/", que se llame "contact_edit.ejs" y completarlo.
+
+36. En "src/controllers/contactController.js" agregar el método "edit" antes del delete.
+
+37. Agregar la ruta en "src/routers/contact.js" al método "edit".
+
+    router.get('/update/:id', contactController.edit);
+    router.post('/update/:id', contactController.update); 
+
+38. Armar de la siguiente manera el método edit en "src/controllers/contactController.js":
+
+controller.edit = (req, res) => {
+    const {id} = req.params;
+    req.getConnection((err, conn) => {
+        conn.query('SELECT * FROM contact WHERE id = ?', [id], (err, contact) => {
+            res.RENDER('contact_edit', {
+                data: contact[0]
+            });
+        });
+    })
+};
+
+39. Agregar a "src/controllers/contactController.js" el método "update":
+
+    controller.update = (req, res) => {
+        const {id} = req.params;
+        const newContact = req.body;
+        req.getConnection((err, conn) => {
+            conn.query('UPDATA contact set ? WHERE id = ?', [newContact, id], (err, rows) => {
+                res.redirect('/');
+            });
+        });
+    };
+
+40. Si todo funcionó, disfruta de la agenda de contactos :)
+
+
+Extra:
+
+"app.js"                                            Es el archivo que inicia todo.
+"routes/contact.js"                                 Posee las rutas o url's que el frontEnd puede enviar, y cada url tiene una función que está escrita dentro de un controlador.
+"src/controllers/contactController.js"              Define cada función que se utiliza dentro de la agenda. A su vez, éste archivo se encarga de seleccionar algo de la base de datos y de renderizar las vistas del html o de ejs.
+
+
+
+Video: https://www.youtube.com/watch?v=VxRXlUrV6y0
+
+
+
