@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Create Screen</title>
+</head>
+<body>
+
+<h1>Create User Form Screen</h1>
+<input id="usernameInput" type="text" placeholder="Nombre de usuario" value="">
+<input id="passwordInput" type="password" placeholder="Contraseña" value="">
+<button id="createUserButton">Create User</button>
+
+<h1>Create Group Form Screen</h1>
+<input id="groupnameInput" type="text" placeholder="Nombre del grupo" value="">
+<input id="descriptionInput" type="text" placeholder="Descrición" value="">
+<button id="createGroupButton">Create Group</button>
+
+<h1>Choose a MemberGroup Form Screen</h1>
+<form action="#">
+	<label for="lang">MemberGroup</label>
+	<select name="lenguajes" id="lang">
+	  <option value="Grupo 1">Grupo 1</option>
+	  <option value="Reyes">Reyes</option>
+	  <option value="Los Caballeros">Los Caballeros</option>
+	</select>
+	<input type="submit" value="Confirm" />
+</form>
+
+</body>
+
+<script type="text/javascript">
+
+
+
+function getFormValues()
+{
+	let createFormData =
+	{
+		username: null,
+		password: null
+	};
+
+	createFormData.username = document.getElementById('usernameInput').value;
+	createFormData.password = document.getElementById('passwordInput').value;
+
+	return createFormData;
+}
+
+
+function getFormValues2()
+{
+	let createFormData =
+	{
+		groupname: null,
+		description: null
+	};
+
+	createFormData.groupname = document.getElementById('groupnameInput').value;
+	createFormData.description = document.getElementById('descriptionInput').value;
+
+	return createFormData;
+}
+
+
+function onCreateUserButtonClick()
+{
+	fetch('./user/createUser.php', { method:'post', body: JSON.stringify(getFormValues()) } ).then( response => response.json() ).then( response => { alert(response.description)} );
+}
+
+document.getElementById('createUserButton').addEventListener('click', ()=>onCreateUserButtonClick() );
+
+
+
+function onCreateGroupButtonClick()
+{
+	fetch('./group/createGroup.php', { method:'post', body: JSON.stringify(getFormValues2()) } ).then( response => response.json() ).then( response => { alert(response.description)} );
+}
+
+document.getElementById('createGroupButton').addEventListener('click', ()=>onCreateGroupButtonClick() );
+
+</script>
+</html>
