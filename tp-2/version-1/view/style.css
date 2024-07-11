@@ -1,0 +1,54 @@
+body
+{
+    background-color:darkslateblue;
+}
+
+h2
+{
+    text-align: center;
+    color:azure;
+}
+
+input
+{
+    text-align: center;
+    width: 100%;
+    padding: 8px 20px;
+    /*border: 2px solid rgb(204, 204, 204);*/
+    border: 2px solid rgb(110, 14, 134);
+    box-sizing: border-box;
+}
+
+
+image
+{
+    width: 800px;
+}
+
+div
+{
+    text-align: center;
+    color: white;
+    /*
+    border:3px solid;
+    width:100%;
+	margin:5px;
+    */
+}
+
+.GIF
+{
+    text-align: center;
+}
+
+button
+{
+    background-color: #199b9a;
+    color: white;
+}
+
+a
+{
+    color:dodgerblue;
+}
+
