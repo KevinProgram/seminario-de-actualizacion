@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bienvenido Admin</h1>
+    <a href="/">Home</a>
+
+    <!-- Flash Messages -->
+    <div class="alert alert-info" role="alert">
+        <!-- Flash messages can be displayed here if needed -->
+    </div>
+
+    <!-- Add Product Form -->
+    <h2>Add Product</h2>
+    <form action="/addproduct" method="POST">
+        <div class="form-group">
+            <label for="product_name">Product Name:</label>
+            <input type="text" id="product_name" name="product_name" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="product_price">Product Price:</label>
+            <input type="text" id="product_price" name="product_price" required class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Add Product</button>
+    </form>
+
+    <!-- Delete Product Form -->
+    <h2>Delete Product</h2>
+    <form action="/deleteproduct" method="POST">
+        <div class="form-group">
+            <label for="id_product">Product ID:</label>
+            <input type="text" id="id_product" name="id_product" required class="form-control">
+        </div>
+        <button type="submit" class

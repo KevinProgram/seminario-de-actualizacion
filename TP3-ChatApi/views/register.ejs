@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #ffffff;
+            padding-top: 50px;
+        }
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: #ffffff;
+            border-bottom: none;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            text-align: center;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://i.pinimg.com/736x/eb/4e/ea/eb4eea8e76ad52f70f9fc15c6b098d8b.jpg">
+    <style>
+        img {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 100px;
+            height: auto;
+        }
+    </style>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Create Your Account</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="/register" method="post">
+                            <div class="form-group">
+                                <label for="InputName">Name</label>
+                                <input type="text" class="form-control" id="InputName" placeholder="Enter name" name="txtName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="InputLastname">Lastname</label>
+                                <input type="text" class="form-control" id="InputLastname" placeholder="Enter lastname" name="txtLastname" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="InputPassword">Password</label>
+                                <input type="password" class="form-control" id="InputPassword" placeholder="Enter password" name="txtPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleRoleSelect">Role</label>
+                                <select class="form-control" id="exampleRoleSelect" name="selectRole">
+                                    <option value="1">Admin</option>
+                                    <option value="2">Normal User</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User List Table -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>User List</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Lastname</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% users.forEach(user => { %>
+                                    <tr>
+                                        <td><%= user.id %></td>
+                                        <td><%= user.name %></td>
+                                        <td><%= user.lastname %></td>
+                                        <td><%= user.id_role %></td> 
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
