@@ -14,9 +14,6 @@ const wss = new WebSocket.Server({ server });
 const users = {}; // To store user IDs
 const connections = {}; // To store WebSocket connections
 
-const algorithm = 'aes-256-cbc'; // Encryption algorithm
-const key = crypto.randomBytes(32); // Generate a random encryption key
-const iv = crypto.randomBytes(16); // Generate a random initialization vector
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,26 +31,30 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+// ------------------------------- app.post whit Stored procedures -------------------------------
+
 app.post('/login', (req, res) => {
     const { txtName, txtLastname, txtPassword } = req.body;
 
-    db.query('SELECT * FROM user WHERE name = ? AND lastname = ? AND password = ?', [txtName, txtLastname, txtPassword], (err, results) => {
-        if (err) throw err;
-        if (results.length > 0) {
-            const account = results[0];
+    db.query('CALL sp_login_user(?, ?, ?)', [txtName, txtLastname, txtPassword], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Error en la base de datos');
+        }
+
+        // If no results are found, redirect to the home page
+        if (results[0].length > 0) {
+            const account = results[0][0]; // We take the first result (it should be only one)
             req.session.logged = true;
             req.session.userId = account.id; // Store user ID in session
-            req.session.userName = `${account.name} ${account.lastname}`; // Store full name for display purposes
+            req.session.userName = `${account.name} ${account.lastname}`; // Store full name
 
             users[req.session.userId] = account.id; // Add userId to users object
             res.redirect('/chat'); // Redirect to chat
         } else {
-            res.redirect('/');
+            res.redirect('/'); // Redirect to login if user is not found
         }
-
     });
-
-    
 });
 
 app.get('/chat', (req, res) => {
@@ -93,15 +94,14 @@ wss.on('connection', (connection) => {
         // Handle incoming messages
         if (result.method === "message") {
             const recipientId = result.receiver; // Get recipient userId
-            const encryptedData = encrypt(result.data); // Encrypt message before broadcasting
-
+            
             // Send the message to the recipient, decrypted
             for (const id in connections) {
                 if (connections[id].userId == recipientId && connections[id].connection.readyState === WebSocket.OPEN) {
                     connections[id].connection.send(JSON.stringify({
                         method: "message",
                         sender: connections[clientId].fullName, // Send sender's full name
-                        data: decrypt(encryptedData) // Send decrypted message
+                        data: result.data
                     }));
                 }
             }
@@ -139,21 +139,17 @@ function guid() {
     });
 }
 
-// Encryption function
-function encrypt(text) {
-    const cipher = crypto.createCipheriv(algorithm, key, iv);
-    let encrypted = cipher.update(text, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-    return encrypted;
-}
 
-// Decryption function
-function decrypt(text) {
-    const decipher = crypto.createDecipheriv(algorithm, key, iv);
-    let decrypted = decipher.update(text, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
-    return decrypted;
-}
+// Definition of the encryption algorithm and key size
+const algorithm = 'aes-256-cbc';
+const sharedKey = crypto.randomBytes(32); // The server encryption key
+const iv = crypto.randomBytes(16); // The initialization vector (IV)
+
+// API to get the shared key
+app.get('/getSharedKey', (req, res) => {
+    res.json({ key: sharedKey.toString('hex'), iv: iv.toString('hex') }); // Returns the key and IV in hexadecimal format
+});
+
 
 // Start the server
 server.listen(5000, () => {

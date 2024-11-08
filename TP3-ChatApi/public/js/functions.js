@@ -1,6 +1,6 @@
 // ------------------------------- Captcha -------------------------------
 
-// Función para generar un texto aleatorio
+// Function to generate random text
 function generateRandomText(length)
 {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -13,12 +13,12 @@ function generateRandomText(length)
     return result;
 }
 
-// Mostrar el CAPTCHA
+// Show the CAPTCHA
 const captchaText = generateRandomText(6);
 document.getElementById('captcha').textContent = captchaText;
 
-let isCaptchaValid = false; // Estado de validación del captcha
-let isEmailValid = false; // Estado de validación del email
+let isCaptchaValid = false; // Captcha validation status
+let isEmailValid = false; // Email validation status
 
 document.getElementById('verifyBtn').addEventListener('click', function()
 {
@@ -30,12 +30,12 @@ document.getElementById('verifyBtn').addEventListener('click', function()
         messageElement.textContent = '¡Correcto! CAPTCHA resuelto.';
         messageElement.style.color = 'green';
         document.getElementById('captchaValid').value = 'true';
-        isCaptchaValid = true; // Captcha es válido
+        isCaptchaValid = true; // Captcha is valid
     } else {
         messageElement.textContent = 'Incorrecto. Intenta de nuevo.';
         messageElement.style.color = 'red';
         document.getElementById('captchaValid').value = 'false';
-        isCaptchaValid = false; // Captcha no es válido
+        isCaptchaValid = false; // Captcha is invalid
     }
 
     updateLoginButtonState();
@@ -43,33 +43,33 @@ document.getElementById('verifyBtn').addEventListener('click', function()
 
 // ------------------------------- Mail -------------------------------
 
-let emailCode = ''; // Variable para almacenar el código enviado
+let emailCode = ''; // Variable to store the sent code
 
-// Función para enviar un correo con un código numérico
+// Function to send an email with a numerical code
 function sendEmailCode(email)
 {
-    const code = generateNumericCode(6); // Generar un código numérico de 6 dígitos
+    const code = generateNumericCode(6); // Generate a 6-digit numeric code
     console.log(`Enviando código ${code} al correo ${email}`);
-    emailCode = code; // Guardar el código enviado
-    // Aquí deberías implementar la lógica para enviar el correo, o simularlo
+    emailCode = code; // Save the submitted code
+    
     return code;
 }
 
-// Función para generar un código numérico aleatorio
+// Function to generate a random numerical code
 function generateNumericCode(length)
 {
     let result = '';
     for (let i = 0; i < length; i++)
     {
-        result += Math.floor(Math.random() * 10); // Generar un dígito aleatorio del 0 al 9
+        result += Math.floor(Math.random() * 10); // Generate a random digit from 0 to 9
     }
     return result;
 }
 
-// Captura el correo del usuario
+// Capture the user's email
 document.getElementById('sendCodeBtn').addEventListener('click', function()
 {
-    event.preventDefault(); // Prevenir el envío del formulario
+    event.preventDefault(); // Prevent form submission - Prevenir el envío del formulario
     const email = document.getElementById('emailInput').value;
     if (email)
     {
@@ -77,7 +77,7 @@ document.getElementById('sendCodeBtn').addEventListener('click', function()
         document.getElementById('codeSentMessage').textContent = 'Se ha enviado un código a tu correo.';
         document.getElementById('codeSentMessage').style.color = 'green';
 
-        // Habilitar el campo de entrada del código
+        // Enable code input field - Habilitar el campo de entrada del código
         document.getElementById('codeInput').disabled = false;
         document.getElementById('verifyEmailBtn').disabled = false;
     } else {
@@ -86,10 +86,10 @@ document.getElementById('sendCodeBtn').addEventListener('click', function()
     }
 });
 
-// Verificar el código introducido por el usuario
+// Verify the code entered by the user
 document.getElementById('verifyEmailBtn').addEventListener('click', function(event)
 {
-    event.preventDefault(); // Prevenir el envío del formulario
+    event.preventDefault(); // Prevent form submission
     const userInputCode = document.getElementById('codeInput').value;
     const messageElement = document.getElementById('message');
 
@@ -97,25 +97,25 @@ document.getElementById('verifyEmailBtn').addEventListener('click', function(eve
     {
         messageElement.textContent = '¡Correcto! Código verificado.';
         messageElement.style.color = 'green';
-        isEmailValid = true; // Email es válido
+        isEmailValid = true; // Email is valid
     } else {
         messageElement.textContent = 'Incorrecto. Intenta de nuevo.';
         messageElement.style.color = 'red';
-        isEmailValid = false; // Email no es válido
+        isEmailValid = false; // Email is not valid
     }
 
     updateLoginButtonState();
 });
 
-// Función para actualizar el estado del botón de inicio de sesión
+// ------------------------------- Feature to update login button state - Función para actualizar el estado del botón de inicio de sesión -------------------------------
+
 function updateLoginButtonState()
 {
-    // const loginBtn = document.getElementById('loginBtn');
-    loginBtn.disabled = !(isCaptchaValid && isEmailValid); // Habilitar solo si ambos son válidos
+    loginBtn.disabled = !(isCaptchaValid && isEmailValid); // Enable only if both are valid
     document.getElementById('loginBtn').addEventListener('click', function() {
-        // Aquí va tu lógica de inicio de sesión
+       
         if (isCaptchaValid && isEmailValid) {
-            // Lógica para iniciar sesión
+
             console.log('Usuario logueado con éxito');
         } else {
             console.log('Fallo en la validación. No se puede loguear.');

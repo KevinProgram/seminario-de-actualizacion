@@ -117,6 +117,41 @@
                 }
             });
         }
+
+
+        
+        // ------------------------------- Encrypt -------------------------------
+
+        // Function to get the shared key from the server
+        async function getSharedKey() {
+            const response = await fetch('/getSharedKey');
+            const data = await response.json();
+            return {
+                key: Buffer.from(data.key, 'hex'),
+                iv: Buffer.from(data.iv, 'hex')
+            };
+        }
+
+        // Encryption function (client)
+        async function encrypt(text) {
+            const { key, iv } = await getSharedKey();
+
+            const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+            let encrypted = cipher.update(text, 'utf8', 'hex');
+            encrypted += cipher.final('hex');
+            return encrypted;
+        }
+
+        // Decryption function (client)
+        async function decrypt(text) {
+            const { key, iv } = await getSharedKey();
+
+            const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
+            let decrypted = decipher.update(text, 'hex', 'utf8');
+            decrypted += decipher.final('utf8');
+            return decrypted;
+        }
+
     </script>
     
     
