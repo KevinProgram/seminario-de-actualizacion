@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Grupos</title>
+</head>
+<body>
+  <h1>Gestión de Grupos</h1>
+
+  <h2>Agregar Grupo</h2>
+  <form action="/add/group" method="POST">
+    <input type="text" name="name" placeholder="Nombre del grupo" required>
+    <input type="text" name="description" placeholder="Descripción del grupo" required></input>
+    <button type="submit">Agregar Grupo</button>
+  </form>
+
+  <h2>Editar Grupo</h2>
+  <form action="/edit/group" method="POST">
+    <input type="text" name="oldName" placeholder="Nombre actual del grupo" required>
+    <input type="text" name="newName" placeholder="Nuevo nombre del grupo" required>
+    <textarea name="newDescription" placeholder="Nueva descripción del grupo" required></textarea>
+    <button type="submit">Editar Grupo</button>
+  </form>
+
+  <h2>Borrar Grupo</h2>
+  <form action="/delete/group" method="POST">
+    <input type="text" name="name" placeholder="Nombre del grupo a borrar" required>
+    <button type="submit">Borrar Grupo</button>
+  </form>
+
+  <h2>Grupos Registrados</h2>
+  <ul>
+    <% if (groups.length === 0) { %>
+      <li>No hay grupos registrados.</li>
+    <% } else { %>
+      <% groups.forEach(group => { %>
+        <li>ID: <%= group.id %> - Nombre: <%= group.name %> - Descripción: <%= group.description %></li>
+      <% }) %>
+    <% } %>
+  </ul>
+
+  <br>
+  <button onclick="window.location.href='/'">Volver a la Página Principal</button>
+</body>
+</html>

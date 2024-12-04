@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Acciones</title>
+</head>
+<body>
+  <h1>Gestión de Acciones</h1>
+
+  <h2>Agregar Acción de Grupo</h2>
+  <form action="/add/groupaction" method="POST">
+    <input type="text" name="action" placeholder="Acción" required>
+    <input type="text" name="memberUserGroup_id" placeholder="Id de Miembros" required>
+    <button type="submit">Agregar Acción de Grupo</button>
+  </form>
+
+  <h2>Editar Acción de Grupo</h2>
+  <form action="/edit/groupaction" method="POST">
+    <input type="text" name="oldAction" placeholder="Acción actual" required>
+    <input type="text" name="oldIdMember" placeholder="ID de Miembro actual" required>
+    <input type="text" name="newAction" placeholder="Nueva Acción" required>
+    <input type="text" name="newIdMember" placeholder="Nueva ID de Miembro" required>
+    <button type="submit">Editar Acción de Grupo</button>
+  </form>
+
+  <h2>Borrar Acción de Grupo</h2>
+  <form action="/delete/groupaction" method="POST">
+    <input type="text" name="action" placeholder="Acción a borrar" required>
+    <button type="submit">Borrar Acción de Grupo</button>
+  </form>
+
+  <h2>Usuarios Registrados</h2>
+  <ul>
+    <% if (groupactions.length === 0) { %>
+      <li>No hay usuarios registrados.</li>
+    <% } else { %>
+      <% groupactions.forEach(groupaction => { %>
+        <li>ID: <%= groupaction.id %> - Action: <%= groupaction.action %> - ID de Miembro: <%= groupaction.memberUserGroup_id %></li>
+      <% }) %>
+    <% } %>
+  </ul>
+
+  <br>
+  <button onclick="window.location.href='/'">Volver a la Página Principal</button>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Usuarios</title>
+</head>
+<body>
+  <h1>Gestión de Miembros</h1>
+
+  <h2>Relacionar Miembros</h2>
+  <form action="/add/memberusergroup" method="POST">
+    <input type="text" name="user_id" placeholder="User ID" required>
+    <input type="text" name="group_id" placeholder="Group ID" required>
+    <button type="submit">Relacionar Usuario al Grupo</button>
+  </form>
+
+  <h2>Editar Relación</h2>
+  <form action="/edit/memberusergroup" method="POST">
+    <input type="text" name="oldUserId" placeholder="ID actual de User" required>
+    <input type="text" name="oldGroupId" placeholder="ID actual de Group" required>
+    <input type="text" name="newUserId" placeholder="Nuevo User ID" required>
+    <input type="text" name="newGroupId" placeholder="Nuevo Group ID" required>
+    <button type="submit">Editar Relación</button>
+  </form>
+
+  <h2>Borrar Relación</h2>
+  <form action="/delete/memberusergroup" method="POST">
+    <input type="text" name="user_id" placeholder="User ID a borrar" required>
+    <button type="submit">Borrar Relación</button>
+  </form>
+
+  <h2>Usuarios Registrados</h2>
+  <ul>
+    <% if (memberusergroups.length === 0) { %>
+      <li>No hay usuarios registrados.</li>
+    <% } else { %>
+      <% memberusergroups.forEach(memberusergroup => { %>
+        <li>ID: <%= memberusergroup.id %> - User ID: <%= memberusergroup.user_id %> - Group ID: <%= memberusergroup.group_id %></li>
+      <% }) %>
+    <% } %>
+  </ul>
+
+  <br>
+  <button onclick="window.location.href='/'">Volver a la Página Principal</button>
+</body>
+</html>

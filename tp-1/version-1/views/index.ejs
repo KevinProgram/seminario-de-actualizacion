@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página principal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            text-align: center;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Selecciona una opción</h1>
+        <button onclick="window.location.href='/user'">Gestión de Usuarios</button>
+        <button onclick="window.location.href='/group'">Gestión de Grupos</button>
+        <button onclick="window.location.href='/memberusergroup'">Gestión de Miembros</button>
+        <button onclick="window.location.href='/groupaction'">Gestión de Acciones</button>
+    </div>
+
+
+</body>
+</html>
